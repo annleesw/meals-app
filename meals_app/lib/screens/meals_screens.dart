@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:meals_app/models/meal.dart';
-import 'package:meals_app/screens/meals_details.dart';
+import 'package:meals_app/models/meal_models.dart';
+import 'package:meals_app/screens/meals_details_screens.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
@@ -9,19 +9,16 @@ class MealsScreen extends StatelessWidget {
     super.key,
     this.title, //no required makes it optional
     required this.meals,
-    required this.onToggleFavourite,
   });
 
   final String? title; //? makes it optional
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavourite;
 
   void selectMeal (BuildContext context, Meal meal) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (ctx) => MealsDetailsScreen(
-          meal: meal,
-          onToggleFavourite: onToggleFavourite,),
+          meal: meal,),
       ),
     );
   }
