@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:meals_app/providers/meal_provider.dart';
-import 'package:meals_app/models/meal_models.dart';
 import 'package:meals_app/screens/categories_screens.dart';
 import 'package:meals_app/screens/filters_screens.dart';
 import 'package:meals_app/screens/meals_screens.dart';
@@ -17,7 +15,7 @@ const kInitialFilters = {
   Filter.vegan: false
 };
 
-class TabsScreen extends ConsumerStatefulWidget { //stateful widget by riverpod
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
@@ -48,23 +46,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final meals = ref.watch(mealsProvider); //watch is a method that listens to a provider
-    final activeFilters = ref.watch(filtersProvider);
-    final availableMeals = meals.where((meal) { //where is a method that filters a list
-      if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if ((activeFilters)[Filter.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      if (activeFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final availableMeals = ref.watch(filteredMealsProvider);
 
     Widget activePage = CategoriesScreen(
       availableMeals: availableMeals,
@@ -72,14 +54,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
-      final favouriteMeals = ref.watch(favouriteMealsProvider); 
-      //riverpod package automatically extracts 'state' property value from other notifier class that belongs to the provider
-      //ref.watch yields <List<Meal>> type instead of notifier class
-
+      final favouriteMeals = ref.watch(favouriteMealsProvider);
       activePage = MealsScreen(
         meals: favouriteMeals,
       );
-      activePageTitle = 'Your Favorites';
+      activePageTitle = 'Your Favourites';
     }
 
     return Scaffold(
@@ -100,7 +79,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
-            label: 'Favorites',
+            label: 'Favourites',
           ),
         ],
       ),
