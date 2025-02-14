@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal_models.dart';
 import 'package:meals_app/providers/favourites_provider.dart';
 
-class MealDetailsScreen extends ConsumerWidget {
+class MealDetailsScreen extends ConsumerWidget { //ConsumerWidget: a stateless widget that can listen to providers
   const MealDetailsScreen({
     super.key,
     required this.meal,
@@ -13,7 +13,7 @@ class MealDetailsScreen extends ConsumerWidget {
   final Meal meal;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) { //WidgetRef ref: interact with provider state using ref
     final favouriteMeals = ref.watch(favouriteMealsProvider);
 
     final isFavourite = favouriteMeals.contains(meal);
@@ -33,17 +33,35 @@ class MealDetailsScreen extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(isFavourite ? Icons.star : Icons.star_border),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween<double>(
+                    begin: 0.8, 
+                    end: 1)
+                    .animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(isFavourite ? Icons.star : Icons.star_border, key: ValueKey(isFavourite),), 
+              //outined star for no favourite and filled star for favourite
+              //key determines if the widget is the same or not
+            ),
+            //outined star for no favourite and filled star for favourite
           )
         ]),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Image.network(
-                meal.imageUrl,
-                height: 300,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero( //animate from meal_item.dart to meal_details_screen.dart
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  height: 300,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 14),
               Text(

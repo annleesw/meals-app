@@ -5,7 +5,7 @@ import 'package:meals_app/providers/filters_provider.dart';
 // import 'package:meals_app/screens/tabs.dart';
 // import 'package:meals_app/widgets/main_drawer.dart';
 
-class FiltersScreen extends ConsumerWidget {
+class FiltersScreen extends ConsumerWidget { //ConsumerWidget: a stateless widget that can listen to providers
   const FiltersScreen({super.key});
 
   @override

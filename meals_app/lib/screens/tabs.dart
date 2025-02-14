@@ -15,7 +15,7 @@ const kInitialFilters = {
   Filter.vegan: false
 };
 
-class TabsScreen extends ConsumerStatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget { //Consumer or stateful when state is changing
   const TabsScreen({super.key});
 
   @override

@@ -9,7 +9,7 @@ enum Filter {
   vegan,
 }
 
-class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
+class FiltersNotifier extends StateNotifier<Map<Filter, bool>> { //StateNotifier(): for stateful widgets
   FiltersNotifier()
       : super({
           Filter.glutenFree: false,
@@ -37,7 +37,7 @@ final filtersProvider =
 );
 
 final filteredMealsProvider = Provider((ref) {
-  final meals = ref.watch(mealsProvider);
+  final meals = ref.watch(mealsProvider); //ref. watch() : Use it to display data and automatically rebuild the widget when the state changes. 
   final activeFilters = ref.watch(filtersProvider);
 
   return meals.where((meal) {
